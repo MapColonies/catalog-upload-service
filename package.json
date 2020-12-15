@@ -1,7 +1,7 @@
 {
-  "name": "service-name",
+  "name": "catalog-upload-service",
   "version": "1.0.0",
-  "description": "This is template for map colonies typescript service",
+  "description": "Map colonies catalog upload backend",
   "main": "index.ts",
   "scripts": {
     "test:unit": "jest --coverage --testPathPattern=\"./src/tests/unit/.*.spec.ts\" --reporters='default' --reporters='jest-html-reporters' --watchAll=false",
@@ -19,7 +19,11 @@
     "test": "tests"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "repository": {
+    "type": "GIT",
+    "url": "https://github.com/MapColonies/catalog-upload-service"
+  },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
@@ -37,7 +41,12 @@
     "@types/config": "0.0.36",
     "@types/cors": "^2.8.7",
     "@types/express": "^4.17.8",
+    "@types/fs-extra": "^9.0.5",
     "@types/jest": "^26.0.12",
+    "@types/lodash": "^4.14.165",
+    "@types/multer": "^1.4.5",
+    "@types/multer-s3": "^2.7.8",
+    "@types/node": "^14.14.13",
     "@types/swagger-ui-express": "^4.1.2",
     "@types/yamljs": "^0.2.31",
     "commitlint": "^9.1.2",
@@ -56,16 +65,22 @@
     "@map-colonies/mc-logger": "^1.2.1",
     "@map-colonies/mc-model-types": "^1.0.1",
     "@map-colonies/mc-probe": "^1.0.0",
+    "aws-sdk": "^2.809.0",
+    "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "config": "^3.3.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
     "http-status-codes": "^2.1.2",
+    "lodash": "^4.17.20",
+    "multer-s3": "^2.9.0",
     "openapi-validator-middleware": "^3.1.1",
     "reflect-metadata": "^0.1.13",
     "swagger-ui-express": "^4.1.4",
     "tsyringe": "^4.3.0",
+    "upath": "^2.0.1",
     "yamljs": "^0.3.0"
   },
   "jest": {
