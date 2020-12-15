@@ -1,6 +1,6 @@
 import { normalize, join } from 'upath';
 import * as multer from 'multer';
-import { mkdirs, pathExists } from 'fs-extra';
+import { mkdirs } from 'fs-extra';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { ImageMetadata } from '@map-colonies/mc-model-types';
 import { Request } from 'express';

@@ -1,12 +1,12 @@
 import multer from 'multer';
 import { Request } from 'express';
 import { injectable } from 'tsyringe';
+import { CatalogDbService } from '../../services/catalogDbService';
 import { IFileFilter } from './iFileFilter';
 
 @injectable()
 export class UpdateFileFilter implements IFileFilter {
-  //TODO: add private indexer: ImageIndexerHttpClient
-  public constructor() {}
+  public constructor(private readonly catalog: CatalogDbService) {}
 
   public filter(
     req: Request,
@@ -14,7 +14,7 @@ export class UpdateFileFilter implements IFileFilter {
     cb: multer.FileFilterCallback
   ): void {
     const id = JSON.parse(req.body.additionalData).id;
-    this.indexer
+    this.catalog
       .exists(id)
       .then((exists: boolean) => cb(null, exists))
       .catch((err: Error) => cb(err));
