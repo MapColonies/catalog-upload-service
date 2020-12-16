@@ -46,18 +46,16 @@ export class FileSystemStorageBuilder {
       `FileSystemStorageBuilder - createUplandFolder - Uploading file to path: ${uploadDir}/${file.originalname}`
     );
     body.uploadDir = uploadDir;
-    mkdirs(uploadDir, (err) => {
-      if (err) {
-        this.logger.error(
-          `FileSystemStorageBuilder - createUplandFolder - Failed to create upload folder : ${uploadDir} with error : ${err.message}`
-        );
-        cb(
-          `Failed to create upload folder: ${uploadDir} with error : ${err.message}`,
-          ''
-        );
-      } else {
-        cb(null, uploadDir);
-      }
+    mkdirs(uploadDir).then(()=> cb(null, uploadDir)).catch(err =>{
+      const error = err as Error;
+      this.logger.error(
+        `FileSystemStorageBuilder - createUplandFolder - Failed to create upload folder : ${uploadDir} with error : ${error.message}`
+      );
+      
+      cb(
+        new Error(`Failed to create upload folder: ${uploadDir} with error : ${error.message}`),
+        ''
+      );
     });
   }
 }

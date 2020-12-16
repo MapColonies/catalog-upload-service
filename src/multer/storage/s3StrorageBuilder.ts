@@ -1,10 +1,12 @@
 import { S3 } from 'aws-sdk';
 import { findIndex } from 'lodash';
-import { StorageEngine } from 'multer';
-import * as multerS3 from 'multer-s3';
+import { StorageEngine, Multer } from 'multer';
+import  multerS3 from 'multer-s3';
 import { MCLogger } from '@map-colonies/mc-logger';
 import config from 'config';
 import { Request } from 'express';
+import { CreateUploadRequest } from '../../models/createUploadRequest';
+import { UpdateUploadRequest } from '../../models/updateUploadRequest';
 
 declare type Callback = (error: Error | null, destination: string) => void;
 
@@ -25,23 +27,24 @@ export class S3StorageBuilder {
         this.createBucketIfNotExists(data, this.bucket);
       })
       .catch((err) => {
+        const error = err as Error;
         this.logger.error(
           'S3StorageBuilder - CreateStorage - failed to get buckets list from object storage: %s',
-          err.message
+          error.message
         );
         process.exit(1);
       });
 
-    const multer = multerS3({
+    const storage = multerS3({
       s3: this.s3Client,
-      bucket: (req: Request, file: Express.Multer.File, cb: Callback) => {
-        cb(null, this.bucket);
+      bucket: (req: Express.Request, file: Express.Multer.File, cb: Callback) => { 
+        return cb(null, this.bucket);
       },
       key: (req: Request, file: Express.Multer.File, cb: Callback) => {
         this.createUploadKey(req, file, cb);
       },
     });
-    return multer;
+    return storage;
   }
 
   private createS3Client(): S3 {
@@ -80,22 +83,32 @@ export class S3StorageBuilder {
           );
         })
         .catch((err) => {
+          let message = '';
+          if (typeof err === 'string'){
+            message = err;
+          }
+          else if (err instanceof Error){
+            message = err.message;
+          }
           this.logger.error(
-            `S3StorageBuilder - CreateBucketIfNotExists - can\'t create bucket, failed with error: ${err}`
+            `S3StorageBuilder - CreateBucketIfNotExists - can't create bucket, failed with error: ${message}`
           );
           process.exit(1);
         });
     }
   }
 
-  private createUploadKey(req, file: Express.Multer.File, cb: Callback): void {
-    const fileId = JSON.parse(req.body.additionalData).id;
+  private createUploadKey(req: Request, file: Express.Multer.File, cb: Callback): void {
+    const data = req.body as CreateUploadRequest | UpdateUploadRequest;
+    const metadata = data.additionalData; //TODO: check if parsed or string
+    const fileId = metadata.id as string;
     const productDir = `${fileId}`;
-
-    req.body.uploadDir = 's3://' + this.bucket + '/' + productDir;
+    //TODO: check if nessary
+    //req.body.uploadDir = 's3://' + this.bucket + '/' + productDir;
     const key = productDir + '/' + file.originalname;
+    const path = `s3://${this.bucket}/${key}`
     this.logger.info(
-      `S3StorageBuilder - CreateUploadKey - Uploading file to path: ${req.body.uploadDir}/${file.originalname}`
+      `S3StorageBuilder - CreateUploadKey - Uploading file to path: ${path}`
     );
 
     cb(null, key);

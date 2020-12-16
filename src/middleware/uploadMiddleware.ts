@@ -1,5 +1,5 @@
-import { Request, Response, NextFunction } from 'Express';
-import multer, { Field, MulterError } from 'multer';
+import { Request, Response, NextFunction } from 'express';
+import multer, { Field } from 'multer';
 import { IFileFilter } from '../multer/filters/iFileFilter';
 
 function getMiddleware(fields: Field[], filter?: IFileFilter) {
@@ -18,7 +18,7 @@ function getMiddleware(fields: Field[], filter?: IFileFilter) {
       storage: undefined, //TODO: replace with storage engine
     }).fields(fields);
     upload(req, res, (err: unknown) => {
-      if (err) {
+      if (err != undefined) {
         //TODO: handle upload error
         next(err);
       } else {

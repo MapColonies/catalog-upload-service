@@ -43,7 +43,7 @@ export class UploadService {
     return this.createResponse(metaDate);
   }
 
-  // eslint-disable-next-line @typescript-eslint/require-await
+  // eslint-disable-next-line @typescript-eslint/require-await, @typescript-eslint/no-unused-vars
   public async delete(id: string): Promise<ApiHttpResponse> {
     throw new InternalServerError('not implemented');
     return this.createResponse();
@@ -68,7 +68,7 @@ export class UploadService {
         throw new BadRequestError('file is missing');
       }
     } else {
-      if (files.file[0]) {
+      if (files.file.length > 0) {
         metadata.imageUri = files.file[0].path || files.file[0].location;
       }
     }
