@@ -5,6 +5,8 @@ import { WorkflowAction } from '../models/workFlowAction';
 import { CreateUploadRequest } from '../models/createUploadRequest';
 import { UploadedFiles } from '../models/uploadedFiles';
 import { UpdateUploadRequest } from '../models/updateUploadRequest';
+import { InternalServerError } from '../exceptions/internalServerError'
+import { BadRequestError } from '../exceptions/badRequestError'
 import { CatalogDbService } from './catalogDbService';
 import { WorkflowHttpClient } from './WorkFlowHttpClient';
 
@@ -41,8 +43,9 @@ export class UploadService {
     return this.createResponse(metaDate);
   }
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async delete(id: string): Promise<ApiHttpResponse> {
-    throw new InternalServerErrorException('not implemented');
+    throw new InternalServerError('not implemented');
     return this.createResponse();
   }
 
@@ -62,7 +65,7 @@ export class UploadService {
   ): void {
     if (!files.file) {
       if (requireMainFile) {
-        throw new BadRequestException('file is missing');
+        throw new BadRequestError('file is missing');
       }
     } else {
       if (files.file[0]) {
