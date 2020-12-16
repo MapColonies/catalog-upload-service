@@ -3,7 +3,12 @@ import { Request } from 'express';
 import { IFileFilter } from './iFileFilter';
 
 export class MultiFilter implements IFileFilter {
-  public constructor(private readonly filters: IFileFilter[]) {}
+
+private readonly filters: IFileFilter[];
+
+  public constructor(...filters: IFileFilter[]) {
+    this.filters = filters;
+  }
 
   public filter(
     req: Request,

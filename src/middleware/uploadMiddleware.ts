@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import multer, { Field } from 'multer';
+import multer, { Field, StorageEngine } from 'multer';
+import { container } from 'tsyringe'
 import { IFileFilter } from '../multer/filters/iFileFilter';
 
 function getMiddleware(fields: Field[], filter?: IFileFilter) {
@@ -15,7 +16,7 @@ function getMiddleware(fields: Field[], filter?: IFileFilter) {
     }
     const upload = multer({
       fileFilter: filter?.filter,
-      storage: undefined, //TODO: replace with storage engine
+      storage: container.resolve<StorageEngine>('StorageEngine'),
     }).fields(fields);
     upload(req, res, (err: unknown) => {
       if (err != undefined) {

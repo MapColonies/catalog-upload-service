@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { helloWorldRouter } from './helloWorld';
+import { uploadsRouter } from './uploades';
 import { swaggerRouter } from './swagger';
 
 const globalRouter = Router();
 globalRouter.use(swaggerRouter);
-globalRouter.use('/helloWorld', helloWorldRouter);
+globalRouter.use('/upload', uploadsRouter);
 
 export { globalRouter };
