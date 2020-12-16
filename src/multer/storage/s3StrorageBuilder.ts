@@ -32,7 +32,7 @@ export class S3StorageBuilder {
         process.exit(1);
       });
 
-    return multerS3({
+    const multer = multerS3({
       s3: this.s3Client,
       bucket: (req: Request, file: Express.Multer.File, cb: Callback) => {
         cb(null, this.bucket);
@@ -41,6 +41,7 @@ export class S3StorageBuilder {
         this.createUploadKey(req, file, cb);
       },
     });
+    return multer;
   }
 
   private createS3Client(): S3 {
