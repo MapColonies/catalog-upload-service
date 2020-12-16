@@ -41,7 +41,7 @@ export class UploadService {
     return this.createResponse(metaDate);
   }
 
-  public delete(id: string): ApiHttpResponse {
+  public async delete(id: string): Promise<ApiHttpResponse> {
     throw new InternalServerErrorException('not implemented');
     return this.createResponse();
   }
