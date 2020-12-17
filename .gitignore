@@ -3,6 +3,7 @@ jest_html_reporters.html
 
 #CONFD
 config
+!config/test.json
 confd/**
 !confd/*.js
 !confd/*.tmpl
