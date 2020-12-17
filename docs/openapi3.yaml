@@ -90,8 +90,6 @@ components:
             format: binary
       required:
         - additionalData
-        - file
-        - additionalFiles
     UpdateUploadRequest:
       type: object
       properties:
@@ -112,5 +110,3 @@ components:
             format: binary
       required:
         - additionalData
-        - file
-        - additionalFiles

@@ -2,9 +2,10 @@ import { normalize, join } from 'upath';
 import * as multer from 'multer';
 import { mkdirs } from 'fs-extra';
 import { MCLogger } from '@map-colonies/mc-logger';
-import { ImageMetadata } from '@map-colonies/mc-model-types';
 import { Request } from 'express';
 import config from 'config';
+import { CreateUploadRequest } from '../../models/createUploadRequest';
+import { UpdateUploadRequest } from '../../models/updateUploadRequest';
 
 declare type Callback = (error: Error | null, destination: string) => void;
 
@@ -25,7 +26,7 @@ export class FileSystemStorageBuilder {
     cb: Callback
   ): void {
     const root = config.get<string>('storage.FS.uploadRoot');
-    if (root || root == '') {
+    if (!root || root == '') {
       this.logger.error(
         `FileSystemStorageBuilder - createUploadFolder - Failed to resolve file upload folder due to root directory configuration issue`
       );
@@ -37,15 +38,14 @@ export class FileSystemStorageBuilder {
       );
       return;
     }
-    const body = req.body as { additionalData: string; uploadDir: string }; //TODO: replace with proper request type
-    const metadata = JSON.parse(body.additionalData) as ImageMetadata;
+    const data = req.body as CreateUploadRequest | UpdateUploadRequest;
+    const metadata = data.additionalData;
     const fileId = metadata.id as string;
     const productDir = `${fileId}`;
     const uploadDir = normalize(join(normalize(root), normalize(productDir)));
     this.logger.info(
       `FileSystemStorageBuilder - createUplandFolder - Uploading file to path: ${uploadDir}/${file.originalname}`
     );
-    body.uploadDir = uploadDir;
     mkdirs(uploadDir).then(()=> cb(null, uploadDir)).catch(err =>{
       const error = err as Error;
       this.logger.error(

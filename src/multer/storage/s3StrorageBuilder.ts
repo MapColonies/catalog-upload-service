@@ -100,11 +100,9 @@ export class S3StorageBuilder {
 
   private createUploadKey(req: Request, file: Express.Multer.File, cb: Callback): void {
     const data = req.body as CreateUploadRequest | UpdateUploadRequest;
-    const metadata = data.additionalData; //TODO: check if parsed or string
+    const metadata = data.additionalData;
     const fileId = metadata.id as string;
     const productDir = `${fileId}`;
-    //TODO: check if nessary
-    //req.body.uploadDir = 's3://' + this.bucket + '/' + productDir;
     const key = productDir + '/' + file.originalname;
     const path = `s3://${this.bucket}/${key}`
     this.logger.info(

@@ -8,6 +8,7 @@ private readonly filters: IFileFilter[];
 
   public constructor(...filters: IFileFilter[]) {
     this.filters = filters;
+    this.filter = this.filter.bind(this);
   }
 
   public filter(
@@ -28,17 +29,23 @@ private readonly filters: IFileFilter[];
       }
     };
 
-    this.filters.forEach((filter) => {
-      filter.filter(req, file, callback);
-      // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unnecessary-condition
-      if (!passed) {
-        if (err) {
-          cb(err);
-        } else {
-          cb(err, passed);
+    try{
+      for(let i=0;i< this.filters.length;i++){
+        this.filters[i].filter(req,file,callback);
+        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions,@typescript-eslint/no-unnecessary-condition
+        if (!passed) {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          if ( err !== null) {
+            cb(err);
+          } else {
+            cb(null, false);
+          }
+          return;
         }
-        return;
       }
-    });
+      cb(null,true);
+    }catch (err){
+      cb(err);
+    }
   }
 }

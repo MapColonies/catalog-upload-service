@@ -15,12 +15,15 @@ export class CreateFileFilter implements IFileFilter {
     file: Express.Multer.File,
     cb: multer.FileFilterCallback
   ): void {
-    const metadataString = get(req,'body.additionalData') as string;
-    const metadata = JSON.parse(metadataString) as ImageMetadata;
+    try{
+    const metadata = get(req,'body.additionalData') as ImageMetadata;
     const id = metadata.id as string;
     this.catalogService
       .exists(id)
       .then((exists: boolean) => cb(null, !exists))
       .catch((err: Error) => cb(err));
+  } catch(err){
+    cb(err);
   }
+} 
 }

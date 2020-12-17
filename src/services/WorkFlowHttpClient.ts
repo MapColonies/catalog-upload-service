@@ -1,5 +1,5 @@
 import { ImageMetadata } from '@map-colonies/mc-model-types';
-import { injectable } from 'tsyringe';
+import { delay, inject, injectable } from 'tsyringe';
 import config from 'config';
 import axios from 'axios';
 import { MCLogger } from '@map-colonies/mc-logger';
@@ -10,7 +10,7 @@ import { WorkflowAction } from '../models/workFlowAction';
 export class WorkflowHttpClient {
   private readonly baseUrl: string;
 
-  public constructor(private readonly logger: MCLogger) {
+  public constructor(@inject(delay(() => MCLogger)) private readonly logger: MCLogger) {
     this.baseUrl = config.get('dependentServices.workflowBaseUrl');
   }
 
@@ -28,8 +28,14 @@ export class WorkflowHttpClient {
       url,
       JSON.stringify(data)
     );
-    //TODO: add error handling if needed.
-    await axios.post(url, data);
+    try{
+      await axios.post(url, data);
+    }
+    catch(err){
+      const error = err as Error;
+      this.logger.error(`failed to trigger workflow: ${error.message}`);
+      throw err;
+    }
     return Promise.resolve();
   }
 }

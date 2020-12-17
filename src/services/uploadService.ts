@@ -1,6 +1,6 @@
 import { ApiHttpResponse, ImageMetadata } from '@map-colonies/mc-model-types';
 import { MCLogger } from '@map-colonies/mc-logger';
-import { injectable } from 'tsyringe';
+import { delay, inject, injectable } from 'tsyringe';
 import { WorkflowAction } from '../models/workFlowAction';
 import { CreateUploadRequest } from '../models/createUploadRequest';
 import { UploadedFiles } from '../models/uploadedFiles';
@@ -14,7 +14,7 @@ import { WorkflowHttpClient } from './WorkFlowHttpClient';
 export class UploadService {
   public constructor(
     private readonly catalog: CatalogDbService,
-    private readonly logger: MCLogger,
+    @inject(delay(() => MCLogger)) private readonly logger: MCLogger,
     private readonly workflow: WorkflowHttpClient
   ) {}
 

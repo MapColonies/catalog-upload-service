@@ -20,7 +20,6 @@ function getMiddleware(fields: Field[], filter?: IFileFilter) {
     }).fields(fields);
     upload(req, res, (err: unknown) => {
       if (err != undefined) {
-        //TODO: handle upload error
         next(err);
       } else {
         next();

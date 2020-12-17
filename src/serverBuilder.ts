@@ -33,7 +33,5 @@ export class ServerBuilder {
 
   private registerMiddlewares(): void {
     this.serverInstance.use(cors());
-    this.serverInstance.use(bodyParser.json());
-    this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
   }
 }
