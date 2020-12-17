@@ -97,4 +97,3 @@ describe('UploadService', () => {
       expect(ingestMock).toHaveBeenCalledWith(expectedMetaDate, 'update');
     });
   });
-  
