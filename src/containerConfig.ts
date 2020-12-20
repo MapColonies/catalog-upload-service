@@ -7,8 +7,8 @@ import {
   ILoggerConfig,
   IServiceConfig,
 } from '@map-colonies/mc-logger';
-import { StorageEngine } from 'multer'
-import { FileSystemStorageBuilder } from './multer/storage/fileStstemStorageBuilder';
+import { StorageEngine } from 'multer';
+import { FileSystemStorageBuilder } from './multer/storage/fileSystemStorageBuilder';
 import { S3StorageBuilder } from './multer/storage/s3StrorageBuilder';
 
 function registerExternalValues(): void {
@@ -23,16 +23,20 @@ function registerExternalValues(): void {
   registerStorageEngine(logger);
 }
 
-function registerStorageEngine(logger: MCLogger): void{
+function registerStorageEngine(logger: MCLogger): void {
   const storageEngine = get<string>('storage.engine');
   let storage: StorageEngine;
   switch (storageEngine.toUpperCase()) {
-    case 'FS':
-      storage = new FileSystemStorageBuilder(logger).createStorage();
+    case 'FS': {
+      const fsBuilder = new FileSystemStorageBuilder(logger);
+      storage = fsBuilder.createStorage();
       break;
-    case 'S3':
-      storage = new S3StorageBuilder(logger).createStorage();
+    }
+    case 'S3': {
+      const s3Builder = new S3StorageBuilder(logger);
+      storage = s3Builder.createStorage();
       break;
+    }
     default:
       logger.error(`invalid storage engine selected: ${storageEngine}.`);
       process.exit(1);
