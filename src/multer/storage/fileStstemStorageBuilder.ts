@@ -20,6 +20,7 @@ export class FileSystemStorageBuilder {
       },
     });
   }
+
   private createUploadFolder(
     req: Request,
     file: Express.Multer.File,
@@ -46,16 +47,20 @@ export class FileSystemStorageBuilder {
     this.logger.info(
       `FileSystemStorageBuilder - createUplandFolder - Uploading file to path: ${uploadDir}/${file.originalname}`
     );
-    mkdirs(uploadDir).then(()=> cb(null, uploadDir)).catch(err =>{
-      const error = err as Error;
-      this.logger.error(
-        `FileSystemStorageBuilder - createUplandFolder - Failed to create upload folder : ${uploadDir} with error : ${error.message}`
-      );
-      
-      cb(
-        new Error(`Failed to create upload folder: ${uploadDir} with error : ${error.message}`),
-        ''
-      );
-    });
+    mkdirs(uploadDir)
+      .then(() => cb(null, uploadDir))
+      .catch((err) => {
+        const error = err as Error;
+        this.logger.error(
+          `FileSystemStorageBuilder - createUplandFolder - Failed to create upload folder : ${uploadDir} with error : ${error.message}`
+        );
+
+        cb(
+          new Error(
+            `Failed to create upload folder: ${uploadDir} with error : ${error.message}`
+          ),
+          ''
+        );
+      });
   }
 }
