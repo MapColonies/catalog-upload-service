@@ -4,5 +4,17 @@ dest = "/config/production.json"
 keys = [
     "/configuration/logger/level",
     "/configuration/swagger/json/path",
-    "/configuration/swagger/ui/path"
+    "/configuration/swagger/ui/path",
+    "/configuration/storage/engine",
+    "/configuration/storage/s3/endpoint",
+    "/configuration/storage/s3/accessKeyId",
+    "/configuration/storage/s3/secretAccessKey",
+    "/configuration/storage/s3/bucket",
+    "/configuration/storage/s3/sslEnabled",
+    "/configuration/storage/s3/signatureVersion",
+    "/configuration/storage/s3/region",
+    "/configuration/storage/s3/apiVersion",
+    "/configuration/storage/fs/uploadRoot",
+    "/configuration/dependentServices/imageIndexerBaseUrl",
+    "/configuration/dependentServices/workflowBaseUrl"
 ]

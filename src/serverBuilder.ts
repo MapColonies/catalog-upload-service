@@ -3,7 +3,6 @@ import { initAsync as validatorInit } from 'openapi-validator-middleware';
 import { MCLogger } from '@map-colonies/mc-logger';
 import { injectable } from 'tsyringe';
 import cors from 'cors';
-import * as bodyParser from 'body-parser';
 import { RequestLogger } from './middleware/RequestLogger';
 import { ErrorHandler } from './middleware/ErrorHandler';
 import { globalRouter } from './routers/global';
@@ -33,7 +32,5 @@ export class ServerBuilder {
 
   private registerMiddlewares(): void {
     this.serverInstance.use(cors());
-    this.serverInstance.use(bodyParser.json());
-    this.serverInstance.use(this.requestLogger.getLoggerMiddleware());
   }
 }

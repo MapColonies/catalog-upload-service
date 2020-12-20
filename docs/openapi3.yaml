@@ -1,40 +1,112 @@
 openapi: 3.0.1
 info:
-  title: service-name
-  description: basic template for map colonies service
+  title: catalog upload service
+  description: api for uploading catalog data
   version: 1.0.0
 servers:
   - url: http://localhost:1337
 paths:
-  /helloworld:
-    get:
-      tags:
-        - helloWorld
-      summary: hello world
+  /upload:
+    post:
+      operationId: UploadController_uploadFile
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/CreateUploadRequest'
       responses:
-        200:
-          description: OK
+        '200':
+          description: ''
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/helloWorld"
+                allOf:
+                  - $ref: 'http://localhost/Schema/Http/ImageMetadataResponse.json'
+      tags:
+        - upload
+    put:
+      operationId: UploadController_updateFile
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdateUploadRequest'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - upload
+  '/upload/{id}':
+    get:
+      operationId: UploadController_findFile
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - upload
+    delete:
+      operationId: UploadController_deleteFile
+      parameters:
+        - $ref: '#/components/parameters/idParam'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - upload
 components:
   parameters:
     idParam:
       name: id
-      in: query
+      in: path
       description: id of requested item
       required: true
       schema:
         type: string
         format: uuid
   schemas:
-    helloWorld:
-      required:
-        - hello
+    CreateUploadRequest:
       type: object
       properties:
-        hello:
-          type: string
-      example:
-        hello: world
+        additionalData:
+          allOf:
+            - $ref: 'http://localhost/Schema/ImageMetadata/ImageMetadata-Create.json'
+        file:
+          type: array
+          description: the main data files to upload
+          items:
+            type: string
+            format: binary
+        additionalFiles:
+          type: array
+          description: additional files to upload with the main data file
+          items:
+            type: string
+            format: binary
+      required:
+        - additionalData
+    UpdateUploadRequest:
+      type: object
+      properties:
+        additionalData:
+          allOf:
+            - $ref: 'http://localhost/Schema/ImageMetadata/ImageMetadata-Update.json'
+        files:
+          type: array
+          description: the main data files to upload
+          items:
+            type: string
+            format: binary
+        additionalFiles:
+          type: array
+          description: additional files to upload with the main data file
+          items:
+            type: string
+            format: binary
+      required:
+        - additionalData

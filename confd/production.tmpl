@@ -5,5 +5,25 @@
   },
   "logger": {
     "level": "{{ getv "/configuration/logger/level" "error" }}"
+  },
+  "storage": {
+    "engine": "{{ getv "/configuration/storage/engine" "S3" }}",
+    "S3": {
+      "endpoint": "{{ getv "/configuration/storage/s3/endpoint" "127.0.0.1:9000" }}",
+      "accessKeyId": "{{ getv "/configuration/storage/s3/accessKeyId" "minioadmin" }}",
+      "secretAccessKey": "{{ getv "/configuration/storage/s3/secretAccessKey" "minioadmin" }}",
+      "bucket": "{{ getv "/configuration/storage/s3/bucket" "images" }}",
+      "sslEnabled": {{ getv "/configuration/storage/s3/sslEnabled" "false" }},
+      "signatureVersion": "{{ getv "/configuration/storage/s3/signatureVersion" "v4" }}",
+      "region": "{{ getv "/configuration/storage/s3/region" "" }}",
+      "apiVersion": "{{ getv "/configuration/storage/s3/apiVersion" "2006-03-01" }}"
+    },
+    "FS": {
+      "uploadRoot": "{{ getv "/configuration/storage/fs/uploadRoot" "D:/tmp" }}"
+    }
+  },
+  "dependentServices": {
+    "imageIndexerBaseUrl": "{{ getv "/configuration/dependentServices/imageIndexerBaseUrl" "http://localhost:3001/images" }}",
+    "workflowBaseUrl": "{{ getv "/configuration/dependentServices/workflowBaseUrl" "http://localhost:3009/api/v1" }}"
   }
 }
