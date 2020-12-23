@@ -49,7 +49,6 @@ export class SwaggerController {
   }
 
   private async init(): Promise<void> {
-    //this.swaggerDoc = load('./docs/openapi3.yaml') as swaggerUi.JsonObject;
     this.swaggerDoc = (await this.multiFileSwagger(
       load('./docs/openapi3.yaml')
     ).catch((err) => {
@@ -75,7 +74,7 @@ export class SwaggerController {
   ): Promise<void | Record<string, unknown>> {
     const options = {
       filter: ['relative', 'remote'],
-      location: './docs/openapi3.yaml', //'./Schema/root.json',
+      location: './docs/openapi3.yaml',
       loaderOptions: {
         processContent: function (
           res: { text: string },
@@ -94,7 +93,6 @@ export class SwaggerController {
       },
       function (err: Error) {
         logger.warn(`failed to load swagger reference: ${err.message}.`);
-        console.log(err.stack);
       }
     );
   }
