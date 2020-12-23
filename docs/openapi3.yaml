@@ -23,7 +23,7 @@ paths:
             application/json:
               schema:
                 allOf:
-                  - $ref: 'http://localhost/Schema/Http/ImageMetadataResponse.json'
+                  - $ref: '../Schema/Http/ImageMetadataResponse.json'
       tags:
         - upload
     put:
@@ -75,7 +75,7 @@ components:
       properties:
         additionalData:
           allOf:
-            - $ref: 'http://localhost/Schema/ImageMetadata/ImageMetadata-Create.json'
+            - $ref: '../Schema/ImageMetadata/ImageMetadata-Create.json'
         file:
           type: array
           description: the main data files to upload
@@ -95,7 +95,7 @@ components:
       properties:
         additionalData:
           allOf:
-            - $ref: 'http://localhost/Schema/ImageMetadata/ImageMetadata-Update.json'
+            - $ref: '../Schema/ImageMetadata/ImageMetadata-Update.json'
         files:
           type: array
           description: the main data files to upload
