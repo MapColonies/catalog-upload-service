@@ -14,6 +14,10 @@ if (swaggerJsonPath && swaggerJsonPath !== '') {
   swaggerRouter.get(swaggerJsonPath, controller.serveJson.bind(controller));
 }
 const swaggerPath = swaggerConfig.uiPath;
-swaggerRouter.use(swaggerPath, controller.uiMiddleware, controller.serveUi);
+swaggerRouter.use(
+  swaggerPath,
+  controller.uiMiddleware,
+  controller.serveUi.bind(controller)
+);
 
 export { swaggerRouter };
