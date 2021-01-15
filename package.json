@@ -67,7 +67,7 @@
   "dependencies": {
     "@map-colonies/mc-logger": "^1.2.1",
     "@map-colonies/mc-probe": "^1.0.0",
-    "aws-sdk": "^2.809.0",
+    "aws-sdk": "^2.814.0",
     "axios": "^0.21.0",
     "body-parser": "^1.19.0",
     "config": "^3.3.1",
